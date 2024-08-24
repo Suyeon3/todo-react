@@ -1,20 +1,22 @@
 import styles from '../style/todolist.module.css';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import TodoListItem from './TodoListItem';
+import { ArrContext } from '../context/ArrayContext';
+
 
 export default function TodoList() {
     const [input, setInput] = useState('');
-    const [arr, setArr] = useState([]);
+    const { arr, setArr, save } = useContext(ArrContext);
 
     const todos = 'TODOS';
-
+    
     useEffect(() => {
         load();
     }, []);
 
-    useEffect(() => {
-        console.log(arr);
-    }, [arr]);
+    useEffect(() => {   // arr이 바뀌면 localStorage 저장
+        save(arr);
+    }, [arr])
 
     function load() {
         const loading = localStorage.getItem(todos);
@@ -25,12 +27,7 @@ export default function TodoList() {
         }
     }
 
-    function save(array) {
-        localStorage.setItem(todos, JSON.stringify(array));
-    }
-
     function put(text) {
-        //li 생성 작업
         const liId = arr.length + 1;
         const todo = {
             id: liId,
@@ -40,7 +37,6 @@ export default function TodoList() {
 
         setArr((prevArr) => {
             const updatedArr = [...prevArr, todo];
-            save(updatedArr); // 상태가 업데이트 된 후 저장
             return updatedArr;
         });
     }
@@ -69,11 +65,10 @@ export default function TodoList() {
             ></input>
             <ul
                 className={styles.todos}
-                id='todos'
             >
                 {arr.map((todo) => (
                     <TodoListItem
-                        todo={todo.content}
+                        todo={todo}
                         key={todo.id}
                     />
                 ))}

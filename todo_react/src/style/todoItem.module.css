@@ -1,0 +1,8 @@
+.checkedTodo {
+    text-decoration: line-through;
+    color: darkgray;
+}
+
+.uncheckedTodo{
+
+}

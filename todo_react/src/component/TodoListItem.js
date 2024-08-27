@@ -1,11 +1,13 @@
 import styles from '../style/todoItem.module.css';
-import { useState, useContext } from 'react';
+import { useState, useContext, useRef } from 'react';
 import { ArrContext } from '../context/ArrayContext';
 
 export default function TodoListItem({ todo }) {
-    const { arr, setArr } = useContext(ArrContext);
+    const { setArr } = useContext(ArrContext);
     const [editIsOn, setEditIsOn] = useState(false);
     const [currentTodo, setCurrentTodo] = useState(todo.content);
+    const [checked, setChecked] = useState({ isCompleted: false });
+    const checkboxRef = useRef(null);
 
     function saveCurrentTodo(e) {
         setCurrentTodo(e.target.value);
@@ -34,10 +36,27 @@ export default function TodoListItem({ todo }) {
         setArr((prevArr) => [...prevArr.filter((item) => item.id !== todo.id)]);
     }
 
+    function handleComplete() {
+        const checkBox = checkboxRef.current;
+        setArr((prevArr) => [...prevArr.map((item) => {
+            if (item.id === todo.id) {
+                return {
+                    ...item,
+                    completed: checkBox.checked
+                }
+            }
+        })]);
+        setChecked({ isCompleted: !checked.isCompleted });
+    }
+
     return (
         <li className={styles.TodoListItem}>
-            <div className={styles.checkBox}></div>
-            {currentTodo}
+            <input
+                type='checkBox'
+                ref={checkboxRef}
+                onClick={handleComplete}
+            />
+            <span className={checked.isCompleted?`${styles.checkedTodo}`:`${styles.uncheckedTodo}`}>{currentTodo}</span>
             {editIsOn &&
                 <form>
                     <input
@@ -45,12 +64,11 @@ export default function TodoListItem({ todo }) {
                         value={currentTodo}
                         onChange={(e) => saveCurrentTodo(e)}
                         onKeyDown={(e) => edit(e)}
-                    >
-                    </input>
+                    />
                 </form>
             }
-            <div className={styles.edit} onClick={editToggle}>수정</div>
-            <div className={styles.remove} onClick={handleDelete}>삭제</div>
+            <button className={styles.edit} onClick={editToggle}>수정</button>
+            <button className={styles.remove} onClick={handleDelete}>삭제</button>
         </li>
     )
 }

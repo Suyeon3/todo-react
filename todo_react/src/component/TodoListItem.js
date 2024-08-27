@@ -1,12 +1,12 @@
 import styles from '../style/todoItem.module.css';
-import { useState, useContext, useRef } from 'react';
+import { useState, useContext, useRef, useEffect } from 'react';
 import { ArrContext } from '../context/ArrayContext';
 
 export default function TodoListItem({ todo }) {
     const { setArr } = useContext(ArrContext);
     const [editIsOn, setEditIsOn] = useState(false);
     const [currentTodo, setCurrentTodo] = useState(todo.content);
-    const [checked, setChecked] = useState({ isCompleted: false });
+    const [checked, setChecked] = useState(todo.completed || false);
     const checkboxRef = useRef(null);
 
     function saveCurrentTodo(e) {
@@ -14,12 +14,12 @@ export default function TodoListItem({ todo }) {
     }
 
     function editToggle() {
-        setEditIsOn(!editIsOn);
+        setEditIsOn((prev) => !prev);
+        console.log('dfassd')
     }
 
     function edit(e) {
         if (e.key === 'Enter') {
-            e.preventDefault();
             setArr((prevArr) => [...prevArr.map((item) => {
                 if (item.id === todo.id) {
                     return {
@@ -27,6 +27,7 @@ export default function TodoListItem({ todo }) {
                         content: currentTodo
                     }
                 }
+                return item;
             })]);
             editToggle();
         }
@@ -45,8 +46,9 @@ export default function TodoListItem({ todo }) {
                     completed: checkBox.checked
                 }
             }
+            return item;
         })]);
-        setChecked({ isCompleted: !checked.isCompleted });
+        setChecked(!checked);
     }
 
     return (
@@ -56,16 +58,14 @@ export default function TodoListItem({ todo }) {
                 ref={checkboxRef}
                 onClick={handleComplete}
             />
-            <span className={checked.isCompleted?`${styles.checkedTodo}`:`${styles.uncheckedTodo}`}>{currentTodo}</span>
+            <span className={checked ? `${styles.checkedTodo}` : `${styles.uncheckedTodo}`}>{currentTodo}</span>
             {editIsOn &&
-                <form>
                     <input
                         className={styles.editField}
                         value={currentTodo}
                         onChange={(e) => saveCurrentTodo(e)}
                         onKeyDown={(e) => edit(e)}
                     />
-                </form>
             }
             <button className={styles.edit} onClick={editToggle}>수정</button>
             <button className={styles.remove} onClick={handleDelete}>삭제</button>

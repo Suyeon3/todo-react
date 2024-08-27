@@ -16,6 +16,7 @@ export default function TodoList() {
 
     useEffect(() => {   // arr이 바뀌면 localStorage 저장
         save(arr);
+        console.log(arr);
     }, [arr])
 
     function load() {
@@ -35,10 +36,7 @@ export default function TodoList() {
             completed: false,
         };
 
-        setArr((prevArr) => {
-            const updatedArr = [...prevArr, todo];
-            return updatedArr;
-        });
+        setArr((prevArr) => [...prevArr, todo]);
     }
 
     function saveInput(e) {
@@ -47,14 +45,13 @@ export default function TodoList() {
 
     function submit(e) {
         if (e.key === 'Enter') {
-            e.preventDefault();
             put(input);
             setInput('');
         }
     }
 
     return (
-        <form>
+        <>
             <input
                 className={styles.input}
                 type='text'
@@ -73,6 +70,6 @@ export default function TodoList() {
                     />
                 ))}
             </ul>
-        </form>
+        </>
     )
 }

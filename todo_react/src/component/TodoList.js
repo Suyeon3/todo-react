@@ -4,6 +4,7 @@ import TodoListItem from './TodoListItem';
 import AddTodo from './AddTodo';
 import Filter from './Filter';
 import { ArrContext } from '../context/ArrayContext';
+import { DarkModeProvider } from '../context/DarkModeContext';
 
 
 export default function TodoList() {
@@ -45,26 +46,28 @@ export default function TodoList() {
 
 
     return (
-        <section className={styles.container}>
-            <Filter onFilter={filterTodo} filter={todoFilter}/>
-            <AddTodo onAdd={put} />
-            <ul className={styles.list}>
-                {arr.filter(todo =>
-                    (todoFilter === 'All') ||
-                    (todoFilter === 'Active' && !todo.completed) ||
-                    (todoFilter === 'Completed' && todo.completed)
-                )
-                    .map(todo => (
-                        <TodoListItem
-                            todo={todo}
-                            key={todo.id}
-                            onDelete={handleDelete}
-                            onComplete={handleComplete}
-                            onEdit={handleEdit}
-                        />
-                    ))
-                }
-            </ul>
-        </section>
+        <DarkModeProvider>
+            <section className={styles.container}>
+                <Filter onFilter={filterTodo} filter={todoFilter} />
+                <AddTodo onAdd={put} />
+                <ul className={styles.list}>
+                    {arr.filter(todo =>
+                        (todoFilter === 'All') ||
+                        (todoFilter === 'Active' && !todo.completed) ||
+                        (todoFilter === 'Completed' && todo.completed)
+                    )
+                        .map(todo => (
+                            <TodoListItem
+                                todo={todo}
+                                key={todo.id}
+                                onDelete={handleDelete}
+                                onComplete={handleComplete}
+                                onEdit={handleEdit}
+                            />
+                        ))
+                    }
+                </ul>
+            </section>
+        </DarkModeProvider>
     )
 }

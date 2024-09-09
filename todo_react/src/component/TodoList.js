@@ -9,26 +9,7 @@ import { DarkModeProvider } from '../context/DarkModeContext';
 
 export default function TodoList() {
     const [todoFilter, setTodoFilter] = useState('All');
-    const { arr, setArr, save } = useContext(ArrContext);
-    const todos = 'TODOS';
-
-    useEffect(() => {
-        load();
-    }, []);
-
-    useEffect(() => {   // arr이 바뀌면 localStorage 저장
-        save(arr);
-        console.log(arr);
-    }, [arr])
-
-    function load() {
-        const loading = localStorage.getItem(todos);
-
-        if (loading) {
-            const json = JSON.parse(loading);
-            setArr(json);
-        }
-    }
+    const { arr, setArr } = useContext(ArrContext);
 
     const put = (todo) => setArr((prevArr) => [...prevArr, todo]);
 

@@ -1,15 +1,15 @@
 import styles from '../style/todolist.module.css';
 import { useEffect, useState, useContext } from 'react';
 import TodoListItem from './TodoListItem';
+import AddTodo from './AddTodo';
 import { ArrContext } from '../context/ArrayContext';
 
 
 export default function TodoList() {
-    const [input, setInput] = useState('');
     const { arr, setArr, save } = useContext(ArrContext);
 
     const todos = 'TODOS';
-    
+
     useEffect(() => {
         load();
     }, []);
@@ -28,48 +28,32 @@ export default function TodoList() {
         }
     }
 
-    function put(text) {
-        const liId = arr.length + 1;
-        const todo = {
-            id: liId,
-            content: text,
-            completed: false,
-        };
+    const put = (todo) =>  setArr((prevArr) => [...prevArr, todo]);
 
-        setArr((prevArr) => [...prevArr, todo]);
-    }
+    const handleDelete = (deleted) => 
+        setArr((prevArr) => [...prevArr.filter((t) => t.id !== deleted.id)]);
+    
+    const handleComplete = (completed) => 
+        setArr((prevArr) => [...prevArr.map((t) => t.id === completed.id ? completed : t) ])
 
-    function saveInput(e) {
-        setInput(e.target.value);
-    }
-
-    function submit(e) {
-        if (e.key === 'Enter') {
-            put(input);
-            setInput('');
-        }
+    const handleEdit = (edited) => {
+        setArr((prevArr) => [...prevArr.map((t) => t.id === edited.id ? edited : t)])
     }
 
     return (
-        <>
-            <input
-                className={styles.input}
-                type='text'
-                placeholder='Enter your todo'
-                value={input}
-                onChange={saveInput}
-                onKeyDown={(e) => submit(e)}
-            ></input>
-            <ul
-                className={styles.todos}
-            >
+        <section>
+            <AddTodo onAdd={put} />
+            <ul className={styles.todos}>
                 {arr.map((todo) => (
                     <TodoListItem
                         todo={todo}
                         key={todo.id}
+                        onDelete={handleDelete}
+                        onComplete={handleComplete}
+                        onEdit={handleEdit}
                     />
                 ))}
             </ul>
-        </>
+        </section>
     )
 }

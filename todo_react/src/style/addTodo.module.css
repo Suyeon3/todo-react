@@ -1,0 +1,15 @@
+.form {
+    width:100%;
+    display: flex;
+    padding: 1.4rem 1rem;
+    background-color: var(--color-bg-dark);
+}
+
+.input {
+    flex: 1 0 0 1;
+    font-size: 1.4rem;
+    padding: 0.7rem 1rem;
+    border: none;
+    outline: none;
+    border-radius: 8px;
+}

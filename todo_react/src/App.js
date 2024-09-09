@@ -3,11 +3,11 @@ import { ArrProvider } from './context/ArrayContext';
 
 function App() {
   return (
-    <div className="App">
+    <>
       <ArrProvider>
         <TodoList/>
       </ArrProvider>
-    </div>
+    </>
   );
 }
 

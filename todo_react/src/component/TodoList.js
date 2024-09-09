@@ -45,10 +45,10 @@ export default function TodoList() {
 
 
     return (
-        <section>
-            <Filter onFilter={filterTodo} />
+        <section className={styles.container}>
+            <Filter onFilter={filterTodo} filter={todoFilter}/>
             <AddTodo onAdd={put} />
-            <ul className={styles.todos}>
+            <ul className={styles.list}>
                 {arr.filter(todo =>
                     (todoFilter === 'All') ||
                     (todoFilter === 'Active' && !todo.completed) ||

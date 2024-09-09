@@ -28,8 +28,9 @@ export default function TodoListItem({ todo, onDelete, onComplete, onEdit }) {
     }
 
     return (
-        <li className={styles.TodoListItem}>
+        <li className={styles.todo}>
             <input
+                className={styles.checkbox}
                 type='checkBox'
                 checked={todo.completed}
                 onClick={handleCheck}
@@ -43,8 +44,8 @@ export default function TodoListItem({ todo, onDelete, onComplete, onEdit }) {
                     onKeyDown={(e) => handleEdit(e)}
                 />
             }
-            <button className={styles.edit} onClick={editToggle}>수정</button>
-            <button className={styles.remove} onClick={handleDelete}>삭제</button>
+            <button onClick={editToggle}>수정</button>
+            <button onClick={handleDelete}>삭제</button>
         </li>
     )
 }

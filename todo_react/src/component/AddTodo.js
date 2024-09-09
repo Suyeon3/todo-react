@@ -22,13 +22,15 @@ export default function AddTodo({ onAdd }) {
     }
 
     return (
-        <input
-            className={styles.input}
-            type='text'
-            placeholder='Enter your todo'
-            value={input}
-            onChange={saveInput}
-            onKeyDown={(e) => submit(e)}
-        ></input>
+        <div className={styles.form}>
+            <input
+                className={styles.input}
+                type='text'
+                placeholder='Enter your todo'
+                value={input}
+                onChange={saveInput}
+                onKeyDown={(e) => submit(e)}
+            ></input>
+        </div>
     )
 }
